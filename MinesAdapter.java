@@ -1,10 +1,10 @@
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MinesAdapter extends MouseAdapter{
+public class MinesAdapter extends MouseAdapter {
 
     private final Board board;
-    
+
     public MinesAdapter(Board board) {
         this.board = board;
     }
@@ -14,24 +14,27 @@ public class MinesAdapter extends MouseAdapter{
         int x = e.getX();
         int y = e.getY();
 
+        // Calculate the clicked cell's row and column
         int cCol = x / board.CELL_SIZE;
         int cRow = y / board.CELL_SIZE;
-        
+
         int numRows = board.getN_ROWS();
         int numCols = board.getN_COLS();
 
         boolean doRepaint = false;
 
+        // Start a new game if not in progress
         if (!board.inGame) {
             board.newGame();
             board.repaint();
         }
 
+        // Check if the mouse click is within the board boundaries
         if ((x < numCols * board.CELL_SIZE) && (y < numRows * board.CELL_SIZE)) {
             if (e.getButton() == MouseEvent.BUTTON3) {
-                handleRightClick(cCol, cRow);
+                handleRightClick(cCol, cRow); // Handle right click
             } else {
-                handleLeftClick(cCol, cRow);
+                handleLeftClick(cCol, cRow); // Handle left click
             }
 
             if (doRepaint) {
@@ -43,6 +46,7 @@ public class MinesAdapter extends MouseAdapter{
     private void handleRightClick(int cCol, int cRow) {
         int numCols = board.getN_COLS();
 
+        // Handle right-click logic
         if (board.field[(cRow * numCols) + cCol] > board.MINE_CELL) {
             board.repaint();
 
@@ -67,6 +71,7 @@ public class MinesAdapter extends MouseAdapter{
     private void handleLeftClick(int cCol, int cRow) {
         int numCols = board.getN_COLS();
 
+        // Handle left-click logic
         if (board.field[(cRow * numCols) + cCol] > board.COVERED_MINE_CELL) {
             return;
         }
